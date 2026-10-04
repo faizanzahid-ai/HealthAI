@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "name": "Nexcure",
+    "slug": "nexcure",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.nexcure.app"
+    },
+    "android": {
+      "package": "com.nexcure.app"
+    }
+  }
+}

@@ -1,0 +1,2470 @@
+# MASTER PROMPT — BUILD COMPLETE HEALTHCARE MOBILE APP PROTOTYPE
+
+You are a senior **mobile app architect, Flutter/React Native developer, UI/UX designer, AI integration engineer, database engineer, and QA engineer**.
+
+Build a **complete, polished, functional mobile app prototype** for an AI-assisted healthcare platform connecting:
+
+* Patients
+* Doctors
+* Hospitals
+* Blood donors
+
+This is a **MOBILE-ONLY APPLICATION**.
+
+Name of App is "Nexcure"
+Do NOT build:
+
+* Web application
+* Desktop application
+* Admin web dashboard
+* Marketing website
+* Landing page
+
+The primary deliverable is a complete mobile application prototype that can be demonstrated on Android/iOS.
+
+Use **Flutter + Dart** unless the existing environment requires React Native.
+
+The application must use clean architecture and repository/service abstractions so a real backend can be connected later.
+
+---
+
+# 1. PRODUCT CONCEPT
+
+The application is a healthcare platform for the Pakistani market.
+
+Patients can:
+
+* Search diseases or tumors
+* Discover relevant doctors
+* Discover nearby hospitals
+* Filter results within 10–25 km
+* View doctor profiles
+* View hospital profiles
+* Book appointments
+* Chat with doctors
+* Upload medical reports
+* Receive AI-assisted report summaries in Urdu
+* Share reports with doctors
+* Receive follow-up reminders
+* Scan handwritten prescriptions
+* Extract medicine information
+* View medicine price information
+* View blood requests
+* Follow hospitals
+* Receive blood-request notifications
+* Respond to blood requests
+
+Doctors can:
+
+* Manage their profile
+* Manage appointment slots
+* View appointments
+* Communicate with patients
+* View reports shared by patients
+* View AI-generated report summaries
+* Respond to patients
+* Receive notifications
+* Manage reviews
+
+Hospitals can:
+
+* Manage their hospital page
+* Add/manage doctors
+* Manage appointments
+* Create social-style posts
+* Create blood-request posts
+* Have followers
+* Notify followers about blood requests
+* View donor responses
+* Close/fulfill blood requests
+* Manage hospital information
+
+Blood donors can:
+
+* Create donor profiles
+* Set blood group
+* Set availability
+* Follow hospitals
+* View followed-hospital posts
+* Receive blood-request notifications
+* View blood requests
+* Respond that they can donate
+* Track their responses
+
+The application should feel like a serious, trustworthy healthcare product rather than a generic social-media application.
+
+---
+
+# 2. CORE PRODUCT PRINCIPLE
+
+The application should behave as **one connected ecosystem**, not as separate prototype screens.
+
+For example:
+
+If a patient books an appointment:
+
+```text
+Patient
+    ↓
+Appointment created
+    ↓
+Patient appointment list updated
+    ↓
+Doctor appointment list updated
+    ↓
+Notification generated
+```
+
+If a patient sends a message:
+
+```text
+Patient
+    ↓
+Message
+    ↓
+Doctor conversation updated
+    ↓
+Unread notification/count updated
+```
+
+If a patient shares a report:
+
+```text
+Patient
+    ↓
+Report
+    ↓
+AI summary
+    ↓
+Share with doctor
+    ↓
+Doctor sees shared report
+```
+
+If a hospital creates a blood request:
+
+```text
+Hospital
+    ↓
+Blood request post
+    ↓
+Hospital followers identified
+    ↓
+Notifications generated
+    ↓
+Donors see notification
+    ↓
+Donor opens request
+    ↓
+"I CAN HELP"
+    ↓
+Hospital receives donor response
+```
+
+All these state changes must work inside the prototype.
+
+---
+
+# 3. REQUIRED DOCUMENTATION
+
+Create:
+
+```text
+docs/
+```
+
+with exactly:
+
+```text
+prd.md
+architecture.md
+rules.md
+phrases.md
+design.md
+memory.md
+trd.md
+appflow.md
+schema.md
+implementationplan.md
+tracker.md
+testing.md
+agents.md
+security.md
+```
+
+Do not create empty placeholder files.
+
+These documents must contain actual project decisions and remain synchronized with the implementation.
+
+---
+
+# 4. TECHNOLOGY STACK
+
+Preferred stack:
+
+```text
+Flutter
+Dart
+Riverpod or Bloc
+GoRouter
+Dio
+Freezed/json_serializable where useful
+SQLite/Drift or equivalent
+Secure Storage
+```
+
+Architecture:
+
+```text
+Presentation
+      ↓
+Application / State Management
+      ↓
+Domain
+      ↓
+Data
+      ↓
+Repository
+      ↓
+Remote / Local Data Sources
+```
+
+UI widgets must not directly depend on mock data.
+
+---
+
+# 5. REPOSITORY ARCHITECTURE
+
+Create interfaces for:
+
+```text
+AuthRepository
+UserRepository
+DoctorRepository
+HospitalRepository
+AppointmentRepository
+MessageRepository
+MedicalReportRepository
+PrescriptionRepository
+BloodDonationRepository
+NotificationRepository
+```
+
+Use:
+
+```text
+MockRepository
+```
+
+for the prototype.
+
+Later it must be possible to replace it with:
+
+```text
+ApiRepository
+```
+
+without rewriting the UI.
+
+---
+
+# 6. APPLICATION ROLES
+
+Support:
+
+```text
+PATIENT
+DOCTOR
+HOSPITAL
+DONOR
+```
+
+An internal ADMIN role may exist for demo/seed management, but do not create an admin web dashboard.
+
+Provide demo login accounts.
+
+---
+
+# 7. PATIENT NAVIGATION
+
+Primary navigation:
+
+```text
+Home
+Search
+Appointments
+Messages
+Profile
+```
+
+Additional features:
+
+```text
+Medical Reports
+Prescriptions
+Blood
+Notifications
+Settings
+```
+
+---
+
+# 8. PATIENT HOME
+
+Create a polished healthcare dashboard.
+
+Top:
+
+```text
+Good morning, [Name]
+```
+
+Search:
+
+```text
+Search disease or tumor...
+```
+
+Quick actions:
+
+```text
+Find Doctor
+Find Hospital
+Book Appointment
+Upload Report
+Scan Prescription
+Blood
+```
+
+Sections:
+
+```text
+Upcoming Appointment
+Recent Reports
+Nearby Doctors
+Nearby Hospitals
+Blood Requests
+Followed Hospitals
+```
+
+---
+
+# 9. DISEASE/TUMOR SEARCH
+
+Search field:
+
+```text
+Search disease or tumor
+```
+
+Example searches:
+
+```text
+Brain tumor
+Lung cancer
+Diabetes
+Heart disease
+Kidney disease
+```
+
+Results:
+
+```text
+Relevant Doctors
+Nearby Hospitals
+```
+
+Radius:
+
+```text
+10 km
+15 km
+20 km
+25 km
+```
+
+Doctor result card:
+
+```text
+Doctor Name
+Specialization
+Hospital
+Distance
+Rating
+Verified
+Available Today
+```
+
+Important:
+
+Searching for a disease must **never imply that the patient has that disease**.
+
+---
+
+# 10. LOCATION
+
+Support:
+
+```text
+Use current location
+Select area manually
+```
+
+If location permission is denied, the app must continue working with manual area selection.
+
+---
+
+# 11. DOCTOR PROFILE
+
+Show:
+
+```text
+Profile photo
+Name
+Specialization
+Experience
+About
+Hospital
+Area
+Distance
+Verification
+Rating
+Reviews
+Available Slots
+```
+
+Actions:
+
+```text
+Book Appointment
+Message
+```
+
+---
+
+# 12. HOSPITAL PROFILE — SOCIAL PAGE
+
+The hospital page must be more than a simple information page.
+
+It should work like a professional social-media page, conceptually similar to a LinkedIn-style company page, but with the application's own healthcare design.
+
+Hospital page:
+
+```text
+Hospital Logo
+Hospital Name
+Verification Badge
+Description
+Location
+Phone
+Services
+Doctors
+Followers Count
+Follow / Following Button
+Posts
+Blood Requests
+```
+
+Example:
+
+```text
+┌──────────────────────────────┐
+│       [Hospital Logo]        │
+│                              │
+│  XYZ Hospital ✓              │
+│  Islamabad                   │
+│                              │
+│  12,400 Followers             │
+│                              │
+│  [ Following ]               │
+│                              │
+│  About  Doctors  Blood  Posts│
+└──────────────────────────────┘
+```
+
+The page should contain a chronological post feed.
+
+---
+
+# 13. HOSPITAL FOLLOW SYSTEM
+
+Patients and donors can follow hospitals.
+
+Actions:
+
+```text
+Follow
+Unfollow
+```
+
+Button state:
+
+```text
+Follow
+↓
+Following
+```
+
+Create:
+
+```text
+HospitalFollow
+```
+
+Fields:
+
+```text
+id
+hospitalId
+userId
+createdAt
+isActive
+```
+
+Prevent duplicate follows.
+
+Users should have:
+
+```text
+Followed Hospitals
+```
+
+where they can see all hospitals they follow.
+
+---
+
+# 14. HOSPITAL SOCIAL POSTS
+
+Hospitals can create posts from Hospital Mode.
+
+Post types:
+
+```text
+Blood Needed
+Blood Donation Update
+Hospital Announcement
+Health Information
+General Update
+```
+
+Priority MVP:
+
+```text
+Blood Needed
+```
+
+Hospital post fields:
+
+```text
+id
+hospitalId
+postType
+title
+description
+bloodGroup
+unitsRequired
+urgency
+location
+contactInformation
+createdAt
+expiryDate
+status
+image/attachment
+```
+
+Example:
+
+```text
+XYZ Hospital ✓
+Islamabad
+
+URGENT BLOOD REQUEST
+
+B+ blood required
+
+2 units needed
+
+Please contact the hospital or
+donation coordination team if you
+can donate.
+
+[ I CAN HELP ]
+
+2 hours ago
+```
+
+---
+
+# 15. WHO CAN CREATE BLOOD POSTS
+
+Authorized hospitals and healthcare organizations can create blood-request posts.
+
+Where the product workflow allows it, patients/users may also submit a blood request, but it must identify the associated hospital.
+
+Every blood request requires:
+
+```text
+Blood Group
+Units Required
+Hospital
+Location
+Urgency
+Description
+Contact/Response Method
+Created Date
+Expiry Date
+Status
+```
+
+---
+
+# 16. HOSPITAL FEED
+
+A followed hospital page should display:
+
+```text
+Hospital Header
+       ↓
+Hospital Posts
+       ↓
+Blood Requests
+       ↓
+Hospital Updates
+       ↓
+Donation Updates
+```
+
+Example:
+
+```text
+Following
+
+XYZ Hospital ✓
+
+URGENT B+ BLOOD NEEDED
+2 units
+Islamabad
+
+[ I CAN HELP ]
+
+────────────────
+
+ABC Hospital ✓
+
+O- BLOOD NEEDED
+1 unit
+Rawalpindi
+
+[ I CAN HELP ]
+```
+
+Expired requests:
+
+```text
+Request Closed
+```
+
+must not generate new donation notifications.
+
+---
+
+# 17. DONOR FOLLOWING HOSPITALS
+
+Donors can follow multiple hospitals.
+
+Donor screen:
+
+```text
+My Followed Hospitals
+
+✓ XYZ Hospital
+✓ Shifa Hospital
+✓ ABC Medical Center
+```
+
+Donors can open any followed hospital and see its current posts.
+
+Donor Blood section:
+
+```text
+Blood Requests
+Followed Hospitals
+My Responses
+Notifications
+```
+
+---
+
+# 18. BLOOD REQUEST NOTIFICATION ENGINE
+
+This is a core feature.
+
+Whenever a hospital publishes a new active blood-request post:
+
+```text
+Hospital
+    ↓
+Creates Blood Request
+    ↓
+System identifies followers
+    ↓
+System creates notifications
+    ↓
+Followers receive notifications
+```
+
+For example:
+
+```text
+XYZ Hospital ✓
+
+URGENT B+ blood request
+
+2 units required
+
+[ I CAN HELP ]
+```
+
+Notification:
+
+```text
+🩸 Blood Request
+
+XYZ Hospital needs B+ blood.
+2 units are required.
+
+Tap to view the request.
+```
+
+For the prototype, **every active follower must receive a notification**.
+
+Optionally, the notification system can prioritize:
+
+```text
+1. Matching blood group
+2. Nearby followers
+3. Other followers
+```
+
+But the core requirement is that the hospital's followers are notified.
+
+---
+
+# 19. NOTIFICATION DATA MODEL
+
+Create:
+
+```text
+Notification
+```
+
+Fields:
+
+```text
+id
+userId
+type
+title
+body
+hospitalId
+postId
+bloodRequestId
+createdAt
+isRead
+```
+
+Types:
+
+```text
+BLOOD_REQUEST
+HOSPITAL_POST
+APPOINTMENT
+MESSAGE
+REPORT
+FOLLOW_UP
+SYSTEM
+```
+
+---
+
+# 20. DONOR BLOOD REQUEST FLOW
+
+Complete flow:
+
+```text
+Donor follows Hospital
+        ↓
+Hospital creates B+ blood request
+        ↓
+System identifies followers
+        ↓
+Notification created
+        ↓
+Donor receives notification
+        ↓
+Donor opens notification
+        ↓
+Blood Request Details
+        ↓
+Donor taps "I CAN HELP"
+        ↓
+Response confirmation
+        ↓
+Hospital receives notification
+        ↓
+Hospital views donor response
+        ↓
+Hospital coordinates donation
+```
+
+---
+
+# 21. DONOR RESPONSE
+
+Blood request details must show:
+
+```text
+Blood Group
+Units Needed
+Hospital
+Location
+Urgency
+Description
+Status
+```
+
+Button:
+
+```text
+I CAN HELP
+```
+
+After pressing:
+
+```text
+Thank you for offering to help.
+
+Your response has been sent to
+the hospital/coordination team.
+
+Please follow the hospital's
+instructions for donation.
+```
+
+Create:
+
+```text
+BloodRequestResponse
+```
+
+Fields:
+
+```text
+id
+bloodRequestId
+donorId
+createdAt
+status
+message
+```
+
+Statuses:
+
+```text
+OFFERED
+CONTACTED
+ACCEPTED
+COMPLETED
+CANCELLED
+```
+
+---
+
+# 22. HOSPITAL DONOR RESPONSE DASHBOARD
+
+Hospital Mode must include:
+
+```text
+Blood Requests
+```
+
+Each request:
+
+```text
+Blood Group
+Units
+Status
+Created
+Response Count
+```
+
+Example:
+
+```text
+B+ Blood Needed
+2 Units
+URGENT
+
+12 people responded
+
+[ View Responses ]
+```
+
+Hospital can view donor responses and coordinate with them.
+
+Only information necessary for donation coordination should be shown.
+
+Do not publicly expose:
+
+```text
+CNIC
+Private medical information
+Unnecessary personal data
+```
+
+---
+
+# 23. BLOOD REQUEST LIFECYCLE
+
+Hospital actions:
+
+```text
+Create
+Edit
+Publish
+View
+Close
+Mark Fulfilled
+```
+
+When fulfilled:
+
+```text
+B+ Blood Request
+✓ Fulfilled
+```
+
+The system must stop new notifications for the fulfilled request.
+
+---
+
+# 24. CRITICAL FOLLOWER NOTIFICATION RULE
+
+Implement this business rule:
+
+```text
+IF
+    user follows hospital
+AND
+    hospital creates active blood-request post
+THEN
+    create notification for that follower
+```
+
+Example:
+
+```text
+Hospital A
+
+Followers:
+User 1
+User 2
+Donor 1
+Donor 2
+
+Hospital creates:
+"B+ Blood Needed"
+
+↓
+
+Notification:
+User 1
+User 2
+Donor 1
+Donor 2
+```
+
+In mock mode, notifications must appear immediately.
+
+---
+
+# 25. HOSPITAL SOCIAL POST NOTIFICATIONS
+
+For general hospital posts, notifications may be enabled according to the post type.
+
+For blood requests, notification creation is mandatory.
+
+The notification should never expose private patient information.
+
+---
+
+# 26. PATIENT APPOINTMENTS
+
+Flow:
+
+```text
+Doctor
+↓
+Available Slots
+↓
+Date
+↓
+Time
+↓
+Confirm
+↓
+Appointment Created
+```
+
+Statuses:
+
+```text
+Pending
+Confirmed
+Cancelled
+Completed
+```
+
+Prevent double booking.
+
+Appointment card:
+
+```text
+Doctor
+Hospital
+Date
+Time
+Status
+```
+
+Actions:
+
+```text
+Message Doctor
+Cancel Appointment
+Add Reminder
+```
+
+---
+
+# 27. CHAT
+
+Create a polished healthcare messaging interface.
+
+Features:
+
+```text
+Messages
+Timestamp
+Read indicator
+Unread count
+Attachments
+Medical report sharing
+```
+
+Conversation header:
+
+```text
+Doctor Name
+Specialization
+Availability
+```
+
+Reports must not be shared automatically unless the patient explicitly chooses to share them.
+
+---
+
+# 28. MEDICAL REPORTS
+
+Support:
+
+```text
+PDF
+JPG
+JPEG
+PNG
+```
+
+Options:
+
+```text
+Upload PDF
+Take Photo
+Choose Image
+```
+
+Flow:
+
+```text
+Upload
+↓
+Processing
+↓
+Extract Information
+↓
+AI Summary
+↓
+Important Findings
+```
+
+Show:
+
+```text
+Original Report
+Extracted Information
+AI Summary
+Important Findings
+```
+
+---
+
+# 29. URDU AI MEDICAL SUMMARY
+
+Create a polished report result screen:
+
+```text
+Report Summary
+Important Findings
+Abnormal Values
+Simple Explanation
+Questions to Ask Your Doctor
+```
+
+Urdu sections:
+
+```text
+رپورٹ کا خلاصہ
+
+اہم نتائج
+
+غیر معمولی نتائج
+
+سادہ وضاحت
+
+ڈاکٹر سے پوچھنے والے اہم سوالات
+```
+
+Clearly display:
+
+```text
+AI-generated summary
+Not a diagnosis
+```
+
+The original report must always remain accessible.
+
+---
+
+# 30. MEDICAL AI SAFETY
+
+AI must never:
+
+* Independently diagnose
+* Prescribe medication
+* Change dosage
+* Replace a doctor
+* Invent medical values
+* Pretend uncertain OCR is accurate
+* Tell a patient emergency care is unnecessary
+
+AI is only an assistant for:
+
+```text
+Extraction
+Summarization
+Translation
+Organization
+Communication
+```
+
+For potentially urgent findings, show a conservative professional-care message.
+
+---
+
+# 31. SHARE REPORT WITH DOCTOR
+
+After processing:
+
+```text
+Share with Doctor
+```
+
+Confirmation:
+
+```text
+Doctor
+Report
+AI Summary
+```
+
+Send.
+
+Doctor chat displays:
+
+```text
+Medical Report Shared
+```
+
+Actions:
+
+```text
+View Original Report
+View Summary
+```
+
+---
+
+# 32. TWO-WEEK FOLLOW-UP
+
+After an applicable appointment:
+
+```text
+14 days later
+```
+
+create reminder:
+
+```text
+Your follow-up reminder is due.
+
+Please contact your doctor if a
+follow-up was recommended.
+```
+
+---
+
+# 33. DOCTOR RATINGS
+
+Doctor profile:
+
+```text
+Overall Rating
+Number of Reviews
+Reviews
+```
+
+Patient can submit:
+
+```text
+Stars
+Comment
+```
+
+Only appropriate demo users can submit reviews.
+
+---
+
+# 34. PRESCRIPTION OCR
+
+Screen:
+
+```text
+Scan Prescription
+```
+
+Options:
+
+```text
+Camera
+Gallery
+```
+
+Flow:
+
+```text
+Image
+↓
+Processing
+↓
+OCR
+↓
+Medicine Identification
+↓
+Result
+```
+
+Display:
+
+```text
+Medicine
+Strength
+Dose
+Frequency
+Duration
+Confidence
+```
+
+If uncertain:
+
+```text
+This medicine could not be identified confidently.
+
+Please verify it with your doctor or pharmacist.
+```
+
+---
+
+# 35. MEDICINE PRICES
+
+Display:
+
+```text
+Medicine Name
+Price
+Currency
+Source
+Last Updated
+```
+
+Prototype data must be clearly labeled:
+
+```text
+Demo Price
+```
+
+Never present invented prices as current real-world prices.
+
+---
+
+# 36. DONOR PROFILE
+
+Fields:
+
+```text
+Name
+Age
+Blood Group
+CNIC
+Phone
+Area
+Availability
+Profile Picture
+```
+
+CNIC must never be publicly exposed.
+
+---
+
+# 37. BLOOD SECTION
+
+Create a dedicated Blood section.
+
+Patient/donor can see:
+
+```text
+Urgent Requests
+Nearby Hospitals
+Followed Hospitals
+My Responses
+Notifications
+```
+
+Blood request card:
+
+```text
+URGENT
+
+B+ Blood Needed
+
+2 Units
+
+XYZ Hospital
+Islamabad
+
+[ I CAN HELP ]
+```
+
+---
+
+# 38. NOTIFICATION CENTER
+
+Create a dedicated notification screen.
+
+Categories:
+
+```text
+Appointments
+Messages
+Reports
+Follow-ups
+Blood
+Hospital
+System
+```
+
+Support:
+
+```text
+Read
+Unread
+Mark All as Read
+```
+
+---
+
+# 39. DOCTOR MODE
+
+Doctor navigation:
+
+```text
+Home
+Appointments
+Patients
+Messages
+Profile
+Notifications
+```
+
+Doctor can:
+
+```text
+View appointments
+Manage slots
+Message patients
+View shared reports
+View AI summaries
+Respond to patients
+Manage profile
+View reviews
+```
+
+---
+
+# 40. HOSPITAL MODE
+
+Hospital navigation:
+
+```text
+Home
+Appointments
+Doctors
+Blood
+Notifications
+Profile
+```
+
+Hospital can:
+
+```text
+Manage profile
+Manage doctors
+View appointments
+Create posts
+Create blood requests
+Edit posts
+Close requests
+Mark requests fulfilled
+View followers
+View donor responses
+```
+
+Hospital Home should prominently show:
+
+```text
+Followers
+Active Blood Requests
+New Donor Responses
+Recent Posts
+Appointments
+```
+
+---
+
+# 41. DONOR MODE
+
+Donor navigation:
+
+```text
+Home
+Blood Requests
+Hospitals
+Notifications
+Profile
+```
+
+Donor can:
+
+```text
+View blood requests
+Follow hospitals
+Unfollow hospitals
+View hospital posts
+Respond to blood requests
+Manage availability
+View response history
+```
+
+---
+
+# 42. PATIENT HOSPITAL FOLLOWING
+
+Patients can also follow hospitals.
+
+Following a hospital gives them access to:
+
+```text
+Hospital Posts
+Blood Requests
+Hospital Updates
+Blood Notifications
+```
+
+Patients should therefore also appear in the hospital follower list.
+
+---
+
+# 43. MOBILE NAVIGATION
+
+Patient:
+
+```text
+Home
+Search
+Appointments
+Messages
+Profile
+```
+
+Doctor:
+
+```text
+Home
+Appointments
+Patients
+Messages
+Profile
+```
+
+Hospital:
+
+```text
+Home
+Appointments
+Blood
+Notifications
+Profile
+```
+
+Donor:
+
+```text
+Home
+Requests
+Hospitals
+Notifications
+Profile
+```
+
+---
+
+# 44. DESIGN SYSTEM
+
+Professional healthcare visual language.
+
+Use:
+
+```text
+Primary:
+Deep healthcare blue/teal
+
+Background:
+Very light neutral
+
+Cards:
+White
+
+Text:
+Dark neutral
+
+Success:
+Green
+
+Warning:
+Amber
+
+Emergency:
+Red
+```
+
+Use:
+
+```text
+8px spacing system
+12–16px card padding
+12–16px rounded corners
+Clear button hierarchy
+```
+
+Do not use:
+
+* Excessive gradients
+* Neon colors
+* Generic AI robot imagery
+* Excessive decorative elements
+* Childish visual styles
+
+Hospital social pages should feel professional and trustworthy.
+
+---
+
+# 45. REUSABLE COMPONENTS
+
+Create:
+
+```text
+AppButton
+AppTextField
+DoctorCard
+HospitalCard
+HospitalPostCard
+HospitalHeader
+FollowButton
+FollowerCount
+AppointmentCard
+ReportCard
+PrescriptionCard
+BloodRequestCard
+BloodResponseCard
+NotificationCard
+RatingStars
+SearchBar
+FilterChip
+StatusBadge
+LoadingView
+ErrorView
+EmptyState
+MedicalDisclaimer
+```
+
+---
+
+# 46. DATA MODELS
+
+At minimum:
+
+```text
+User
+PatientProfile
+DoctorProfile
+HospitalProfile
+DonorProfile
+
+Appointment
+DoctorAvailability
+
+Conversation
+Message
+
+MedicalReport
+ReportSummary
+
+Prescription
+PrescriptionMedicine
+MedicinePrice
+
+DoctorReview
+
+HospitalFollow
+HospitalPost
+
+BloodRequest
+BloodRequestResponse
+
+Notification
+```
+
+Relationships:
+
+```text
+User
+ │
+ ├── follows ──> Hospital
+ │
+ ├── receives ──> Notification
+ │
+ └── responds ──> BloodRequest
+
+Hospital
+ │
+ ├── has ──> Followers
+ │
+ ├── creates ──> HospitalPost
+ │
+ └── creates ──> BloodRequest
+                       │
+                       └── DonorResponses
+```
+
+---
+
+# 47. MOCK DATA
+
+Minimum fictional data:
+
+```text
+5 patients
+10 doctors
+5 hospitals
+15 donors
+20 appointments
+20 reviews
+20 hospital posts
+10 blood requests
+20 blood request responses
+30 notifications
+10 reports
+10 prescriptions
+```
+
+Use fictional information only.
+
+Never use real:
+
+```text
+CNIC
+Phone numbers
+Medical records
+Patient identities
+```
+
+---
+
+# 48. DEMO ACCOUNTS
+
+Create:
+
+```text
+patient@demo.com
+doctor@demo.com
+hospital@demo.com
+donor@demo.com
+```
+
+Use a documented demo password.
+
+---
+
+# 49. MOCK MODE
+
+The prototype must work without a backend.
+
+Use:
+
+```text
+APP_MODE=mock
+```
+
+Mock mode must support:
+
+```text
+Login
+Search
+Appointments
+Chat
+Reports
+AI demo processing
+Prescription OCR demo
+Hospital following
+Hospital posts
+Blood requests
+Donor responses
+Notifications
+```
+
+All state changes must persist during the demo session.
+
+---
+
+# 50. AI SERVICE ABSTRACTION
+
+Create:
+
+```text
+MedicalReportService
+PrescriptionOCRService
+MedicineMatchingService
+```
+
+Mock implementations:
+
+```text
+MockMedicalReportService
+MockPrescriptionOCRService
+MockMedicineMatchingService
+```
+
+Future implementations:
+
+```text
+RealMedicalReportService
+RealPrescriptionOCRService
+RealMedicineMatchingService
+```
+
+Never hard-code AI provider logic into UI widgets.
+
+---
+
+# 51. LOCAL STORAGE
+
+Secure storage:
+
+```text
+Authentication tokens
+Sensitive session information
+```
+
+Local database/cache:
+
+```text
+Recent searches
+Non-sensitive cached data
+Notification state
+Draft messages where appropriate
+```
+
+Do not casually store complete medical reports or CNIC information in unsecured local storage.
+
+---
+
+# 52. SECURITY
+
+Implement:
+
+```text
+Secure token storage
+Session timeout
+Role checks
+Input validation
+Secure file handling
+Sensitive-data masking
+No secrets in source
+No medical data in logs
+No CNIC in logs
+Protected report screens
+```
+
+---
+
+# 53. ACCESSIBILITY
+
+Implement:
+
+* Semantic labels
+* Good contrast
+* Large touch targets
+* Screen-reader labels
+* Dynamic text support
+* Clear error messages
+
+---
+
+# 54. ERROR STATES
+
+Every asynchronous screen must support:
+
+```text
+Loading
+Success
+Empty
+Error
+Retry
+```
+
+Examples:
+
+```text
+No doctors found within this radius.
+
+Try increasing the search radius.
+```
+
+```text
+This appointment slot is no longer available.
+
+Please choose another slot.
+```
+
+```text
+The report could not be processed.
+
+Please try again.
+```
+
+---
+
+# 55. TESTING
+
+Create:
+
+## Unit tests
+
+* Models
+* Repositories
+* Services
+* Search filtering
+* Appointment logic
+* Follow/unfollow logic
+* Blood-request notification logic
+* Donor response logic
+
+## Widget tests
+
+* Login
+* Search
+* Doctor card
+* Hospital page
+* Follow button
+* Hospital post
+* Appointment booking
+* Chat
+* Report screen
+* Prescription screen
+* Blood request
+* Notification screen
+
+## Integration tests
+
+Test:
+
+```text
+Login
+→ Search
+→ Doctor
+→ Appointment
+→ Chat
+```
+
+```text
+Report Upload
+→ AI Processing
+→ Urdu Summary
+→ Share With Doctor
+```
+
+```text
+Hospital
+→ Followed By Donor
+→ Create Blood Request
+→ Notification
+→ Donor Opens Request
+→ I Can Help
+→ Hospital Receives Response
+```
+
+```text
+Hospital
+→ Mark Blood Request Fulfilled
+→ Request Closed
+→ No New Notifications
+```
+
+---
+
+# 56. COMPLETE BLOOD DONATION ACCEPTANCE FLOW
+
+This exact flow must work in the prototype:
+
+```text
+Login as Donor
+        ↓
+Open Hospitals
+        ↓
+Open XYZ Hospital
+        ↓
+Follow Hospital
+        ↓
+Hospital shows "Following"
+        ↓
+Open Hospital Feed
+        ↓
+Hospital creates B+ blood request
+        ↓
+Blood request is published
+        ↓
+System finds all followers
+        ↓
+Notifications generated
+        ↓
+Donor receives notification
+        ↓
+Donor opens notification
+        ↓
+Blood request details
+        ↓
+Donor taps "I CAN HELP"
+        ↓
+Response created
+        ↓
+Hospital receives notification
+        ↓
+Hospital opens Blood Requests
+        ↓
+Hospital opens donor responses
+        ↓
+Hospital coordinates donation
+        ↓
+Hospital marks request fulfilled
+        ↓
+Request becomes "Fulfilled"
+        ↓
+No new notifications for that request
+```
+
+This is a mandatory core workflow.
+
+---
+
+# 57. PERFORMANCE
+
+The app should:
+
+* Avoid unnecessary rebuilds
+* Lazy-load lists
+* Cache images
+* Paginate messages
+* Paginate reviews
+* Process AI/OCR asynchronously
+* Show progress indicators
+* Avoid blocking the UI thread
+
+---
+
+# 58. STATE MANAGEMENT
+
+Implement:
+
+```text
+AuthenticationState
+SearchState
+AppointmentState
+ChatState
+ReportState
+PrescriptionState
+HospitalFollowState
+HospitalPostState
+BloodRequestState
+NotificationState
+ProfileState
+```
+
+---
+
+# 59. FILE STRUCTURE
+
+Use:
+
+```text
+healthcare_mobile_app/
+
+├── lib/
+│   ├── core/
+│   │   ├── constants/
+│   │   ├── theme/
+│   │   ├── routing/
+│   │   ├── errors/
+│   │   ├── utils/
+│   │   └── security/
+│   │
+│   ├── features/
+│   │   ├── auth/
+│   │   ├── patient/
+│   │   ├── doctor/
+│   │   ├── hospital/
+│   │   ├── donor/
+│   │   ├── search/
+│   │   ├── appointments/
+│   │   ├── messaging/
+│   │   ├── reports/
+│   │   ├── prescriptions/
+│   │   ├── blood/
+│   │   ├── hospital_social/
+│   │   └── notifications/
+│   │
+│   ├── data/
+│   │   ├── models/
+│   │   ├── repositories/
+│   │   ├── datasources/
+│   │   └── mock/
+│   │
+│   └── main.dart/
+│
+├── test/
+├── integration_test/
+├── assets/
+├── docs/
+├── pubspec.yaml
+├── README.md
+└── .env.example
+```
+
+---
+
+# 60. IMPLEMENTATION ORDER
+
+Follow this order:
+
+```text
+Phase 1
+Documentation
+
+Phase 2
+Flutter setup
+
+Phase 3
+Design system
+
+Phase 4
+Navigation
+
+Phase 5
+Authentication
+
+Phase 6
+Role selection
+
+Phase 7
+Patient dashboard
+
+Phase 8
+Doctor dashboard
+
+Phase 9
+Hospital dashboard
+
+Phase 10
+Donor dashboard
+
+Phase 11
+Search
+
+Phase 12
+Doctor profiles
+
+Phase 13
+Hospital profiles
+
+Phase 14
+Hospital social pages
+
+Phase 15
+Hospital following
+
+Phase 16
+Hospital posts
+
+Phase 17
+Blood requests
+
+Phase 18
+Blood notifications
+
+Phase 19
+Donor responses
+
+Phase 20
+Appointments
+
+Phase 21
+Messaging
+
+Phase 22
+Medical reports
+
+Phase 23
+Urdu AI summary
+
+Phase 24
+Follow-up reminders
+
+Phase 25
+Doctor ratings
+
+Phase 26
+Prescription OCR
+
+Phase 27
+Medicine prices
+
+Phase 28
+Notification center
+
+Phase 29
+Security
+
+Phase 30
+Testing
+
+Phase 31
+Final polish
+```
+
+---
+
+# 61. TRACKER
+
+Continuously update:
+
+```text
+docs/tracker.md
+```
+
+Statuses:
+
+```text
+TODO
+IN_PROGRESS
+BLOCKED
+DONE
+```
+
+Never mark a feature DONE until:
+
+```text
+UI
++
+State
++
+Repository
++
+Mock data
++
+Error states
++
+Tests
+```
+
+are complete.
+
+---
+
+# 62. FINAL QUALITY REQUIREMENT
+
+The application must NOT look like a collection of disconnected prototype screens.
+
+It must behave like one connected mobile product.
+
+The hospital social system must also feel integrated:
+
+```text
+Hospital Profile
+      ↓
+Follow
+      ↓
+Hospital Feed
+      ↓
+Blood Request
+      ↓
+Follower Notification
+      ↓
+Donor Response
+      ↓
+Hospital Response Dashboard
+      ↓
+Donation Coordination
+      ↓
+Request Fulfilled
+```
+
+---
+
+# 63. MEDICAL DISCLAIMER
+
+Include:
+
+> AI-generated information is provided for informational and organizational purposes only. It is not a diagnosis, prescription, or substitute for professional medical advice. Always consult a qualified healthcare professional for medical decisions.
+
+Use shorter versions where appropriate.
+
+---
+
+# 64. FINAL ACCEPTANCE TEST
+
+Verify the complete patient flow:
+
+```text
+Launch App
+↓
+Login as Patient
+↓
+Home
+↓
+Search "Brain Tumor"
+↓
+Select 10–25 km
+↓
+View Doctors
+↓
+Open Doctor
+↓
+View Slots
+↓
+Book Appointment
+↓
+Messages
+↓
+Message Doctor
+↓
+Medical Reports
+↓
+Upload Demo Report
+↓
+Process Report
+↓
+View Urdu Summary
+↓
+Share With Doctor
+↓
+Verify Doctor Receives Report
+↓
+Verify Follow-up Reminder
+```
+
+Prescription flow:
+
+```text
+Scan Prescription
+↓
+OCR
+↓
+Medicine List
+↓
+Medicine Price Information
+```
+
+Hospital social flow:
+
+```text
+Login as Donor
+↓
+Open Hospital
+↓
+Follow Hospital
+↓
+View Hospital Page
+↓
+View Hospital Posts
+↓
+Hospital creates blood request
+↓
+Follower receives notification
+↓
+Open notification
+↓
+View Blood Request
+↓
+I CAN HELP
+↓
+Hospital receives response
+↓
+Hospital views response
+↓
+Hospital marks request fulfilled
+↓
+Verify request is closed
+```
+
+Also verify:
+
+```text
+Patient follows hospital
+↓
+Hospital creates blood request
+↓
+Patient receives notification
+```
+
+and:
+
+```text
+Multiple followers
+↓
+Hospital creates one blood request
+↓
+Each follower receives their own notification
+```
+
+Finally test:
+
+* Patient mode
+* Doctor mode
+* Hospital mode
+* Donor mode
+* Follow/unfollow
+* Hospital posts
+* Blood requests
+* Blood notifications
+* Donor responses
+* Appointments
+* Messaging
+* Reports
+* Urdu AI summary
+* Prescription OCR
+* Medicine prices
+* Reviews
+* Follow-up reminders
+* Error states
+* Security
+* Accessibility
+
+Fix all broken navigation, crashes, state problems, inconsistent UI, and obvious errors.
+
+Update:
+
+```text
+docs/tracker.md
+docs/testing.md
+docs/implementationplan.md
+```
+
+---
+
+# 65. FINAL DELIVERABLE
+
+The final repository must contain:
+
+```text
+healthcare_mobile_app/
+
+├── lib/
+├── test/
+├── integration_test/
+├── assets/
+├── docs/
+│   ├── prd.md
+│   ├── architecture.md
+│   ├── rules.md
+│   ├── phrases.md
+│   ├── design.md
+│   ├── memory.md
+│   ├── trd.md
+│   ├── appflow.md
+│   ├── schema.md
+│   ├── implementationplan.md
+│   ├── tracker.md
+│   ├── testing.md
+│   ├── agents.md
+│   └── security.md
+│
+├── pubspec.yaml
+├── README.md
+└── .env.example
+```
+
+The README must document:
+
+```text
+Flutter setup
+Dependencies
+Run command
+Test command
+Build command
+Demo accounts
+Mock-mode instructions
+Architecture overview
+Future backend integration points
+```
+
+The final application must be runnable locally and demonstrable without requiring a real backend.
+
+# END OF MASTER PROMPT
